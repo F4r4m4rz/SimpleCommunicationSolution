@@ -42,13 +42,23 @@ namespace AibelDeelineInterface.WinForm
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            using (var repos = new COReleaseRepository(new AibelDeelineDbContext()))
+            try
             {
-                Enum.TryParse<PriorityEnum>(cmbPriority.SelectedItem as string, out var enumVal);
-                var release = new CORelease(Mediator.CurrentUser, Mediator.CurrentLocation, enumVal, lstSelectedCOs.Items.OfType<string>().ToArray());
-                repos.Add(release);
+                using (var repos = new COReleaseRepository(new AibelDeelineDbContext()))
+                {
+                    Enum.TryParse<PriorityEnum>(cmbPriority.SelectedItem as string, out var enumVal);
+                    var release = new CORelease(Mediator.CurrentUser, Mediator.CurrentLocation, enumVal, lstSelectedCOs.Items.OfType<string>().ToArray());
+                    repos.Add(release);
+                }
             }
-            this.Close();
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(string.Format("Failed to create the release, most likely because some of the control object are already released.\n{0}", ex.Message));
+            }
+            finally
+            {
+                this.Close();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

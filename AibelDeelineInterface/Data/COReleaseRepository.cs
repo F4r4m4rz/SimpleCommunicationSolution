@@ -3,6 +3,7 @@ using AibelDeelineInterface.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,17 @@ namespace AibelDeelineInterface.Data
 
         public void Add(CORelease item)
         {
-            db.Releases.Add(item);
-            db.ChangeTracker.Entries().First(a => a.Entity.Equals(item.CreatedBy)).State = System.Data.Entity.EntityState.Unchanged;
-            db.SaveChanges();
+            try
+            {
+                db.Releases.Add(item);
+                db.ChangeTracker.Entries().First(a => a.Entity.Equals(item.CreatedBy)).State = System.Data.Entity.EntityState.Unchanged;
+                db.SaveChanges();
+            }
+            catch(DbUpdateException ex)
+            {
+                var message = String.Join("\n", ex.Entries.Select(a => (a.Entity as ControlObject).Code).ToArray());
+                throw new InvalidOperationException(string.Format("Could not save following entries:\n {0}", message));
+            }
         }
 
         public void Delete(CORelease item)

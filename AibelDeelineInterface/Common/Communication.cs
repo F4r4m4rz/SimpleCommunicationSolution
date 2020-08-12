@@ -11,12 +11,14 @@ namespace AibelDeelineInterface.Common
     {
         protected Communication()
         {
-            PriorityLevel = PriorityEnum.Normal;
             Status = StatusEnum.Open;
             Comments = new Conversation();
             Attachments = new List<Attachment>();
             CreatedOn = DateTime.Now;
         }
+
+        [Key]
+        public int Id { get; set; }
 
         public LocationEnum OriginLocation { get; set; }
 
@@ -36,7 +38,6 @@ namespace AibelDeelineInterface.Common
         [Required]
         public PriorityEnum PriorityLevel { get; set; }
 
-        [Required]
         public User Responsible { get; set; }
 
         [Required]
@@ -45,5 +46,7 @@ namespace AibelDeelineInterface.Common
         public Conversation Comments { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }
+
+        public Hold Hold { get; set; }
     }
 }

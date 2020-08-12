@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using AibelDeelineInterface.Common;
 
 namespace AibelDeelineInterface.Aibel_Deeline
@@ -9,8 +10,5 @@ namespace AibelDeelineInterface.Aibel_Deeline
         {
             
         }
-
-        public string Id { get; set; }
-
     }
 }

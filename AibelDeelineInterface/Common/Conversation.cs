@@ -9,8 +9,8 @@ namespace AibelDeelineInterface.Common
 {
     public class Conversation
     {
-        [Key]
-        public Communication Owner { get; set; }
+        public int Id { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
     }
 }

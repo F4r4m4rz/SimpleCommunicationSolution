@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AibelDeelineInterface.Aibel_Deeline;
 using AibelDeelineInterface.Common;
 
 namespace AibelDeelineInterface.Deeline_Aibel
@@ -10,33 +11,13 @@ namespace AibelDeelineInterface.Deeline_Aibel
     {
         public ModelUpdateRequest()
         {
+            ControlObjects = new List<ControlObject>();
         }
-
-        [Key]
-        public int Id { get; set; }
 
         [Required]
         //TODO: Think of a drag and drap picture and represent into html
         public string Reason { get; set; }
 
-        public string ControlObjects { get; set; }
-
-        [NotMapped]
-        public IEnumerable<string> ControlObjectsList
-        {
-            get
-            {
-                return ControlObjects.Split(';');
-            }
-
-            set
-            {
-                ControlObjects = string.Empty;
-                foreach (var item in value)
-                {
-                    ControlObjects = string.IsNullOrEmpty(ControlObjects) ? $"{item}" : $"{ControlObjects};{item}";
-                }
-            }
-        }
+        public List<ControlObject> ControlObjects { get; set; }
     }
 }

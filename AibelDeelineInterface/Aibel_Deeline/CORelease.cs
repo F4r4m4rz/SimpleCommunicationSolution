@@ -8,38 +8,47 @@ namespace AibelDeelineInterface.Aibel_Deeline
 {
     public class CORelease : Communication
     {
-        public CORelease() : base()
+        private CORelease() : base()
         {
-            ControlObjectsList = new List<string>();
+            ControlObjects = new List<ControlObject>();
             TargetLocation = LocationEnum.Deeline;
+            Purpose = "Releasing COs to Deeline";
         }
 
-        [NotMapped]
-        public IEnumerable<string> ControlObjectsList
+        public CORelease(User creator, LocationEnum origin, string module = null, string area = null, string section = null) : this()
         {
-            get
-            {
-                return ControlObjects.Split(';');
-            }
+            CreatedBy = creator;
+            OriginLocation = origin;
+            Module = module;
+            Area = area;
+            Section = section;
+        }
 
-            set
+        public CORelease(User creator, LocationEnum origin, PriorityEnum priority, string module = null, string area = null, string section = null)
+            : this(creator, origin, module, area, section)
+        {
+            PriorityLevel = priority;
+        }
+
+        public CORelease(User creator, LocationEnum origin, PriorityEnum priority, params string[] controlobjects) : this(creator, origin, priority)
+        {
+            foreach (var co in controlobjects)
             {
-                ControlObjects = string.Empty;
-                foreach (var item in value)
-                {
-                    ControlObjects = string.IsNullOrEmpty(ControlObjects) ? $"{item}" : $"{ControlObjects};{item}";
-                }
+                ControlObjects.Add(new ControlObject(co));
             }
         }
 
-        public string ControlObjects { get; set; }
+        public CORelease(User creator, LocationEnum origin, params string[] controlobjects) : this(creator, origin, PriorityEnum.Normal, controlobjects)
+        {
+
+        }
+
+        public ICollection<ControlObject> ControlObjects { get; set; }
 
         public string Module { get; set; }
 
         public string Area { get; set; }
 
         public string Section { get; set; }
-
-        public Hold Hold { get; set; }
     }
 }

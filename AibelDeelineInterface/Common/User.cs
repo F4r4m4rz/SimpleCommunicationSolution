@@ -23,5 +23,12 @@ namespace AibelDeelineInterface.Common
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email_Address { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var asUser = obj as User;
+            return asUser != null &&
+                   asUser.Id == Id;
+        }
     }
 }

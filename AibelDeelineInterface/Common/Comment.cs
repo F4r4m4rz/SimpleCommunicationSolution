@@ -21,5 +21,7 @@ namespace AibelDeelineInterface.Common
         [Key]
         [Column(Order = 3)]
         public Conversation Conversation { get; set; }
+
+        public string Text { get; set; }
     }
 }
